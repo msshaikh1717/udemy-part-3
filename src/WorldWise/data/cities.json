@@ -1,0 +1,40 @@
+{
+  "cities": [
+    {
+      "id": "db8f",
+      "cityName": "Farsi",
+      "country": "Afghanistan",
+      "emoji": "AF",
+      "date": "2026-03-02T07:08:58.807Z",
+      "notes": "ghj",
+      "position": {
+        "lat": "34.095657032587425",
+        "lng": "63.3661380586758"
+      }
+    },
+    {
+      "id": "00e7",
+      "cityName": "Oymyakonskiy District",
+      "country": "Russian Federation (the)",
+      "emoji": "RU",
+      "date": "2026-03-02T07:14:36.408Z",
+      "notes": "ppp",
+      "position": {
+        "lat": "65.38294452988465",
+        "lng": "141.245963866947"
+      }
+    },
+    {
+      "id": "8789",
+      "cityName": "Aldansky District",
+      "country": "Russian Federation (the)",
+      "emoji": "RU",
+      "date": "2026-03-02T07:16:15.503Z",
+      "notes": "asda",
+      "position": {
+        "lat": "57.66980819811088",
+        "lng": "125.2419569404006"
+      }
+    }
+  ]
+}
