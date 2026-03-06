@@ -1,23 +1,18 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-
-const BASE_URL = "https://dummyjson.com/auth/login";
+import { supabase } from "../../WorldWise/lib/supabaseClient";
 
 export const loginUser = createAsyncThunk(
   "authSlice/loginUser",
-  async function ({ email, password }) {
-    const response = await fetch(BASE_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        body: JSON.stringify({ email, password }),
-      },
+  async function ({ email, password }, { rejectWithValue }) {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
     });
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || "Login failed");
+
+    if (error) {
+      return rejectWithValue(error.message);
     }
-    const data = await response.json();
-    console.log(data, "<== data from api");
+    // data contains: { user, session }
     return data;
   },
 );
@@ -30,8 +25,22 @@ const initialState = {
 };
 
 export const authSlice = createSlice({
-  name: "authSlice",
+  name: "auth",
   initialState,
+
+  reducers: {
+    // update local state with user and token
+    setSession: (state, action) => {
+      state.user = action.payload.user;
+      state.token = action.payload.token;
+    },
+    clearSession: (state) => {
+      ((state.user = null),
+        (state.token = null),
+        (state.isLoading = false),
+        (state.isError = null));
+    },
+  },
 
   extraReducers: (builder) => {
     builder
@@ -43,16 +52,20 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isError = null;
         state.user = action.payload.user;
-        state.token = action.payload.token;
+        state.token = action.payload.session.access_token;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
-        state.isError = action.error.message;
+        state.isError = action.payload; // rejectWithValue sets payload
       });
   },
 });
 
-export const selectUser = (state) => state.authSlice.user;
-export const selectUserLoading = (state) => state.authSlice.isLoading;
-export const selectUserError = (state) => state.authSlice.isError;
+export const selectUser = (state) => state.auth.user;
+export const selectToken = (state) => state.auth.token;
+export const selectAuthLoading = (state) => state.auth.isLoading;
+export const selectAuthError = (state) => state.auth.isError;
+export const selectIsAuthenticated = (state) => !!state.auth.token;
+
+export const { setSession, clearSession } = authSlice.actions;
 export default authSlice.reducer;
