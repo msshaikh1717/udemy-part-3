@@ -1,36 +1,61 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { supabase } from "../../WorldWise/lib/supabaseClient";
 
-const BASE_URL = "http://localhost:9000";
+// Old code which uses json server
+// const BASE_URL = "http://localhost:9000";
 
 export const fetchCities = createAsyncThunk(
   "cityList/fetchCities",
-  async () => {
-    const response = await fetch(`${BASE_URL}/cities`);
-    const data = await response.json();
+  async (_, { rejectWithValue }) => {
+    const { data, error } = await supabase
+      .from("world_wise_cities")
+      .select("*");
+
+    if (error) return rejectWithValue(error.message);
     return data;
   },
 );
 
 export const createCity = createAsyncThunk(
   "cityList/createCity",
-  async (newCity) => {
-    const response = await fetch(`${BASE_URL}/cities`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newCity),
-    });
-    const data = await response.json();
-    return data; // // the server's response will include server‑generated id so no nanoid needed
+  async (newCity, { rejectWithValue }) => {
+    // Get the current user
+    const user = supabase.auth.user(); // synchronous, reads from memory
+
+    if (!user) return rejectWithValue("Not authenticated");
+
+    // 2. Prepare the city object with user_id
+    const cityToInsert = {
+      ...newCity,
+      user_id: user.id,
+    };
+
+    // 3. Insert into Supabase
+    const { data, error } = await supabase
+      .from("world_wise_cities")
+      .insert([cityToInsert])
+      .select(); // returns the inserted row
+
+    if (error) return rejectWithValue(error.message);
+
+    // 4. Return the created city (first element of data)
+    return data[0];
   },
 );
 
 export const removeCity = createAsyncThunk(
   "cityList/removeCity",
-  async (cityId) => {
-    await fetch(`${BASE_URL}/cities/${cityId}`, {
-      method: "DELETE",
-    });
-    return cityId; // return the id so we can remove it from state
+  async (cityId, { rejectWithValue }) => {
+    // 1. Delete from Supabase
+    const { error } = await supabase
+      .from("world_wise_cities")
+      .delete()
+      .eq("id", cityId);
+
+    if (error) return rejectWithValue(error.message);
+
+    // 2. Return the deleted city's id
+    return cityId;
   },
 );
 
@@ -63,11 +88,11 @@ export const cityListSlice = createSlice({
       })
       .addCase(fetchCities.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.cities = action.payload;
+        state.cities = action.payload; //cities array
       })
       .addCase(fetchCities.rejected, (state, action) => {
         state.isLoading = false;
-        state.isError = action.error.message;
+        state.isError = action.payload || "Failed to fetch cities";
       })
       // Handle createCity cases
       .addCase(createCity.pending, (state) => {
@@ -80,7 +105,7 @@ export const cityListSlice = createSlice({
       })
       .addCase(createCity.rejected, (state, action) => {
         state.isLoading = false;
-        state.isError = action.error.message;
+        state.isError = action.payload || "Failed to create city";
       })
       // Handle removeCity cases
       .addCase(removeCity.pending, (state) => {
@@ -95,7 +120,7 @@ export const cityListSlice = createSlice({
       })
       .addCase(removeCity.rejected, (state, action) => {
         state.isLoading = false;
-        state.isError = action.error.message;
+        state.isError = action.payload || "Failed to remove city";
       });
   },
 });

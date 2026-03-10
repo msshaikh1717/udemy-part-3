@@ -23,9 +23,6 @@ function Login() {
   const authError = useSelector(selectAuthError);
 
   const onSubmit = async (data) => {
-    // if (data.email === "udemy3@example.com" && data.password === "*****") {
-    //   dispatch(setLogData(data)); //Temp slice to be replaced with supabase
-    // }
     try {
       const newData = await dispatch(loginUser(data)).unwrap();
       console.log(newData, "<== newData");
@@ -40,8 +37,8 @@ function Login() {
   useEffect(() => {
     async function checkPrevLogin() {
       const { data, error } = await supabase.auth.getSession();
-      console.log(data, "<== data");
-      const { access_token } = data.session;
+      // console.log(data, "<== data");
+      // const { access_token } = data.session;
     }
     checkPrevLogin();
   }, []);

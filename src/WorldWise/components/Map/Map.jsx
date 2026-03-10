@@ -4,7 +4,6 @@ import { MapContainer } from "react-leaflet/MapContainer";
 import { TileLayer } from "react-leaflet/TileLayer";
 import { useMap, useMapEvents } from "react-leaflet/hooks";
 import { useDispatch, useSelector } from "react-redux";
-import { setLogData } from "../../../features/worldWise/logDataSlice";
 import { useNavigate, useSearchParams } from "react-router";
 import { useLocation } from "../../../hooks/useLocation";
 import {
@@ -13,6 +12,8 @@ import {
 } from "../../../features/worldWise/currPositionSlice";
 import { selectCities } from "../../../features/worldWise/cityListSlice";
 import { Flag } from "../Flag";
+import { clearSession } from "../../../features/worldWise/authSlice";
+import { supabase } from "../../lib/supabaseClient";
 
 // fly to clicked location on map
 function LocationMarker({ dispatch, navigate }) {
@@ -117,8 +118,9 @@ function Map() {
             cursor: "pointer",
             background: "#00c46a",
           }}
-          onClick={() => {
-            dispatch(setLogData());
+          onClick={async () => {
+            await supabase.auth.signOut(); // clears Supabase session: this removes the session from localStorage and invalidates the token.
+            dispatch(clearSession()); // update Redux state
             navigate("/");
           }}
         >
