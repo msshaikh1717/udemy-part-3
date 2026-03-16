@@ -12,7 +12,10 @@ import {
 } from "../../../features/worldWise/currPositionSlice";
 import { selectCities } from "../../../features/worldWise/cityListSlice";
 import { Flag } from "../Flag";
-import { clearSession } from "../../../features/worldWise/authSlice";
+import {
+  clearSession,
+  selectUser,
+} from "../../../features/worldWise/authSlice";
 import { supabase } from "../../lib/supabaseClient";
 
 // fly to clicked location on map
@@ -47,8 +50,9 @@ function Map() {
     getUserLocation,
   } = useLocation();
   const cities = useSelector(selectCities);
+  const user = useSelector(selectUser);
   ///
-
+  console.log(user, "<== user");
   // to fly to postion if CityItem is clicked
   const [searchParams, setSearchParams] = useSearchParams();
   useEffect(() => {
@@ -99,7 +103,7 @@ function Map() {
       >
         <img
           alt="profPic"
-          src="https://i.pravatar.cc/100?u=zzads"
+          src={`https://i.pravatar.cc/100?u=${user.id}`}
           style={{
             width: "auto",
             height: "-webkit-fill-available",

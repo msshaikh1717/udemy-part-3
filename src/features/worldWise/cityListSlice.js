@@ -19,11 +19,15 @@ export const fetchCities = createAsyncThunk(
 export const createCity = createAsyncThunk(
   "cityList/createCity",
   async (newCity, { rejectWithValue }) => {
-    // Get the current user
-    const user = supabase.auth.user(); // synchronous, reads from memory
-
-    if (!user) return rejectWithValue("Not authenticated");
-
+    // Get the current user (async)
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+    console.log(user, "<== user");
+    if (userError || !user) {
+      return rejectWithValue(userError?.message || "Not authenticated");
+    }
     // 2. Prepare the city object with user_id
     const cityToInsert = {
       ...newCity,
@@ -35,10 +39,11 @@ export const createCity = createAsyncThunk(
       .from("world_wise_cities")
       .insert([cityToInsert])
       .select(); // returns the inserted row
-
+    console.log(data[0], "<== data[0]");
     if (error) return rejectWithValue(error.message);
 
     // 4. Return the created city (first element of data)
+
     return data[0];
   },
 );
@@ -105,7 +110,12 @@ export const cityListSlice = createSlice({
       })
       .addCase(createCity.rejected, (state, action) => {
         state.isLoading = false;
-        state.isError = action.payload || "Failed to create city";
+        console.log(
+          action.payload,
+          action.error,
+          "<== action.payload,action.error",
+        );
+        state.isError = action.error.message || "Failed to create city";
       })
       // Handle removeCity cases
       .addCase(removeCity.pending, (state) => {

@@ -25,7 +25,6 @@ function Login() {
   const onSubmit = async (data) => {
     try {
       const newData = await dispatch(loginUser(data)).unwrap();
-      console.log(newData, "<== newData");
 
       navigate("/app/cities");
     } catch (error) {
