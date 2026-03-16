@@ -12,6 +12,7 @@ import {
 } from "../../features/worldWise/currPositionSlice";
 import { createCity } from "../../features/worldWise/cityListSlice";
 import { Flag } from "../components/Flag";
+import { format } from "date-fns";
 
 function AddForm() {
   const [searchParams] = useSearchParams();
@@ -32,17 +33,17 @@ function AddForm() {
 
   function onSubmit(data) {
     const cityToAdd = {
-      cityName: data.cityName,
+      city_name: data.cityName,
       country: clickedCityObj.countryName,
       emoji: clickedCityObj.countryCode,
-      date: data.date.toISOString(),
       notes: data.notes,
       position: {
         lat,
         lng,
       },
-      // id: nanoid(), // no need as server will generate it
+      date: format(data.date, "yyyy-MM-dd"),
     };
+    console.log(cityToAdd, "<== cityToAdd");
     dispatch(createCity(cityToAdd));
     navigate("/app/cities");
   }

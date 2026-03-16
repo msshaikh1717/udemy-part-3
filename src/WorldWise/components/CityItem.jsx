@@ -41,7 +41,7 @@ function CityItem({ city }) {
             fontSize: "1.4rem",
           }}
         >
-          {city.cityName}
+          {city.city_name}
         </span>
         <span
           style={{

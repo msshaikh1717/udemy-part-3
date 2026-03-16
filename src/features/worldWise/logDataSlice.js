@@ -1,3 +1,4 @@
+// Temporary slice to be replaced with Supabase Auth Login
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {

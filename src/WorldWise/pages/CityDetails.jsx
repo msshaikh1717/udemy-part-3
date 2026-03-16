@@ -42,7 +42,7 @@ function CityDetails() {
       <div className="went-to">
         <p
           style={{ fontSize: "1.5rem", fontWeight: 700, color: "#aaa" }}
-        >{`YOU WENT TO ${selectedCity?.cityName.toUpperCase()} ON`}</p>
+        >{`YOU WENT TO ${selectedCity?.city_name.toUpperCase()} ON`}</p>
         <p style={{ fontSize: "1.5rem" }}>{formattedDate}</p>
       </div>
 
