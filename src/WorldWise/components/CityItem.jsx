@@ -1,10 +1,11 @@
 import { format } from "date-fns";
 import { useDispatch } from "react-redux";
-import styles from "./CityItem.module.css";
 
 import { Link } from "react-router";
 import { Flag } from "./Flag";
 import { removeCity } from "../../features/worldWise/cityListSlice";
+
+import styles from "./CityItem.module.css";
 
 function CityItem({ city }) {
   // should recieve date in format "2027-10-31T15:59:59.138Z"

@@ -4,16 +4,17 @@ import Product from "./pages/Product";
 import Pricing from "./pages/Pricing";
 import Login from "./pages/Login";
 import AppLayout from "./pages/AppLayout";
-import "./index.css";
 import NotFound from "./pages/NotFound";
 import AppLoggedIn from "./pages/AppLoggedIn";
 import Cities from "./pages/Cities";
 import Countries from "./pages/Countries";
 import AddForm from "./pages/AddForm";
-import CityDetails from "./pages/CItyDetails";
+import CityDetails from "./pages/CityDetails";
 import CityLists from "./pages/CityLists";
 import AuthInitializer from "./components/Auth/AuthInitializer";
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
+
+import "./index.css";
 
 function AppWorldWise() {
   return (
