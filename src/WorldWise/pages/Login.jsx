@@ -45,6 +45,7 @@ function Login() {
       {authError && (
         <h4 style={{ color: "red", textAlign: "center" }}>{authError}</h4>
       )}
+      {authLoading && !authError && <Spinner />}
       <div
         className="login"
         style={{
@@ -54,7 +55,6 @@ function Login() {
           height: "100%",
         }}
       >
-        {authLoading && !authError && <Spinner />}
         <form
           action="/login"
           method="post"
