@@ -28,7 +28,7 @@ function Login() {
 
       navigate("/app/cities");
     } catch (error) {
-      console.log(error, "<== error");
+      console.error(error, "<== error");
     }
   };
 
@@ -36,15 +36,16 @@ function Login() {
   useEffect(() => {
     async function checkPrevLogin() {
       const { data, error } = await supabase.auth.getSession();
-      // console.log(data, "<== data");
-      // const { access_token } = data.session;
     }
     checkPrevLogin();
   }, []);
 
   return (
     <>
-      {authLoading && <Spinner />}
+      {authError && (
+        <h2 style={{ color: "red", textAlign: "center" }}>{authError}</h2>
+      )}
+      {authLoading && !authError && <Spinner />}
       {!authError && !authLoading && (
         <div
           className="login"

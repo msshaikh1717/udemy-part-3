@@ -43,7 +43,6 @@ function AddForm() {
       },
       date: format(data.date, "yyyy-MM-dd"),
     };
-    console.log(cityToAdd, "<== cityToAdd");
     dispatch(createCity(cityToAdd));
     navigate("/app/cities");
   }

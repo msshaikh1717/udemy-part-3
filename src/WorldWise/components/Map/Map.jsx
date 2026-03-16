@@ -52,7 +52,6 @@ function Map() {
   const cities = useSelector(selectCities);
   const user = useSelector(selectUser);
   ///
-  console.log(user, "<== user");
   // to fly to postion if CityItem is clicked
   const [searchParams, setSearchParams] = useSearchParams();
   useEffect(() => {

@@ -24,7 +24,7 @@ export const createCity = createAsyncThunk(
       data: { user },
       error: userError,
     } = await supabase.auth.getUser();
-    console.log(user, "<== user");
+
     if (userError || !user) {
       return rejectWithValue(userError?.message || "Not authenticated");
     }
@@ -39,7 +39,7 @@ export const createCity = createAsyncThunk(
       .from("world_wise_cities")
       .insert([cityToInsert])
       .select(); // returns the inserted row
-    console.log(data[0], "<== data[0]");
+
     if (error) return rejectWithValue(error.message);
 
     // 4. Return the created city (first element of data)
@@ -110,11 +110,6 @@ export const cityListSlice = createSlice({
       })
       .addCase(createCity.rejected, (state, action) => {
         state.isLoading = false;
-        console.log(
-          action.payload,
-          action.error,
-          "<== action.payload,action.error",
-        );
         state.isError = action.error.message || "Failed to create city";
       })
       // Handle removeCity cases
