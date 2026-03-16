@@ -43,83 +43,81 @@ function Login() {
   return (
     <>
       {authError && (
-        <h2 style={{ color: "red", textAlign: "center" }}>{authError}</h2>
+        <h4 style={{ color: "red", textAlign: "center" }}>{authError}</h4>
       )}
-      {authLoading && !authError && <Spinner />}
-      {!authError && !authLoading && (
-        <div
-          className="login"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100%",
-          }}
+      <div
+        className="login"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
+        }}
+      >
+        {authLoading && !authError && <Spinner />}
+        <form
+          action="/login"
+          method="post"
+          onSubmit={handleSubmit(onSubmit)}
+          style={{ width: "40rem" }}
         >
-          <form
-            action="/login"
-            method="post"
-            onSubmit={handleSubmit(onSubmit)}
-            style={{ width: "40rem" }}
+          <p
+            style={{
+              fontSize: "3rem",
+              fontWeight: 600,
+              height: "5rem",
+              width: "40rem",
+            }}
           >
-            <p
-              style={{
-                fontSize: "3rem",
-                fontWeight: 600,
-                height: "5rem",
-                width: "40rem",
-              }}
-            >
-              Email address
-            </p>
-            <input
-              defaultValue="udemy3@example.com"
-              {...register("email")}
-              style={{
-                marginBottom: "4rem",
-                height: "5rem",
-                width: "40rem",
-                fontSize: "2.5rem",
-              }}
-            />
+            Email address
+          </p>
+          <input
+            defaultValue="udemy3@example.com"
+            {...register("email")}
+            style={{
+              marginBottom: "4rem",
+              height: "5rem",
+              width: "40rem",
+              fontSize: "2.5rem",
+            }}
+          />
 
-            <p
-              style={{
-                fontSize: "3rem",
-                fontWeight: 600,
-                height: "5rem",
-                width: "40rem",
-              }}
-            >
-              Password
-            </p>
-            <input
-              defaultValue="udemy3"
-              {...register("password")}
-              style={{
-                marginBottom: "4rem",
-                height: "5rem",
-                width: "40rem",
-                fontSize: "2.5rem",
-              }}
-            />
-            <button
-              style={{
-                height: "5rem",
+          <p
+            style={{
+              fontSize: "3rem",
+              fontWeight: 600,
+              height: "5rem",
+              width: "40rem",
+            }}
+          >
+            Password
+          </p>
+          <input
+            defaultValue="udemy3"
+            {...register("password")}
+            style={{
+              marginBottom: "4rem",
+              height: "5rem",
+              width: "40rem",
+              fontSize: "2.5rem",
+            }}
+          />
+          <button
+            style={{
+              height: "5rem",
 
-                background: "#00c46a",
-                borderRadius: "1rem",
-                padding: "0 2rem",
-                fontSize: "2rem",
-                fontWeight: "600",
-                cursor: "pointer",
-              }}
-            >
-              LOGIN
-            </button>
-          </form>
-        </div>
-      )}
+              background: "#00c46a",
+              borderRadius: "1rem",
+              padding: "0 2rem",
+              fontSize: "2rem",
+              fontWeight: "600",
+              cursor: "pointer",
+            }}
+          >
+            LOGIN
+          </button>
+        </form>
+      </div>
     </>
   );
 }
